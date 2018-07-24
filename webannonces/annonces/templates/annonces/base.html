@@ -15,6 +15,11 @@
        </ul>
        {% endblock %}
    </nav>
+   <section id="thumbnail">
+   	{% load static %}
+   	<img src="{% static 'annonces/img/annonce.png' %}" alt="thumbnail
+   	">
+   </section>
    <section id="content">
        {% block content %}{% endblock %}
    </section>
