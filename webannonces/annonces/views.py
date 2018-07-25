@@ -14,16 +14,11 @@ def home(request):
     """)
 
 def getAnnonce(request, id_annonce):
-    if id_annonce > 300:
-        return redirect('page_none', string="this is a string")
-    if id_annonce > 200:
+    annonce = Annonces.objects.get(id=id_annonce)
+
+    if(annonce is None):
         return redirect(home)
-    if id_annonce > 100:
-        raise Http404
-    return HttpResponse("""
-        <h1>Ceci sera une annonce</h1>
-        <p>l'annonce récupérer aura pour id: {0} </p>
-    """.format(id_annonce))
+    return render(request, 'annonces/annonce.html', locals())
 
 def list(request):
     annonces = Annonces.objects.all().order_by('date')
@@ -33,16 +28,10 @@ def listSearch(request, title):
     annonces = Annonces.objects.filter(titre__contains=title).order_by('date')
     return render(request, 'annonces/list-annonces.html', locals())
 
-def none(request, string):
-    return HttpResponse("""
-        <h1>Ceci sera une page vierge</h1>
-        <p>avec comme paramètre: {0}</p>
-    """.format(string))
-
 # complete database with automatic values
 def peupleur(request):
     ipsum = """Cupcake ipsum dolor sit amet wafer cookie. Bonbon topping candy canes croissant sweet sugar plum bear claw marshmallow. Jelly bear claw apple pie muffin sweet roll cookie marzipan. Powder candy canes jelly-o tiramisu cheesecake halvah cheesecake lollipop brownie. Pastry oat cake cookie. Chocolate cake bonbon sesame snaps chupa chups brownie cotton candy donut. Muffin cake cake carrot cake.
-
+<br>
 Apple pie fruitcake caramels powder muffin. Powder jelly soufflé. Sweet muffin chocolate bar cake pastry jujubes dessert gummies. Croissant dragée lemon drops dessert. Jelly beans caramels powder cake. Gummies icing apple pie cake lemon drops. Cupcake candy canes tootsie roll lollipop. Croissant dessert marshmallow icing jelly cheesecake pie."""
 
     users = len(User.objects.all()) - 1
