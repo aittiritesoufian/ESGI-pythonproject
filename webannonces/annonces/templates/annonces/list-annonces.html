@@ -1,0 +1,12 @@
+{% extends "annonces/base.html" %}
+{% block title %}Liste des annonces du site{% endblock %}
+{% block content %}
+    <h1>Nos annonces</h1>
+    {% for annonce in annonces %}
+        <section>
+            <h2>{{ annonce.titre }}</h2>
+            <p>{{ annonce.contenu|truncatewords:100 }}</p>
+            <p>Date de publication : {{ annonce.date }} - Montant : {{ annonce.montant }}</p>
+        </section>
+    {% endfor %}
+{% endblock %}
