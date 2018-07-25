@@ -42,4 +42,4 @@ class Annonceur(models.Model):
         verbose_name = "annonceur"
 
     def __str__(self):
-        return "Profil de {0}".format(self.user.username)
+        return "{0}".format(self.user.username)
