@@ -7,4 +7,5 @@ urlpatterns = [
     path('list/', views.list, name="liste_annonces"),
     path('list/<str:title>', views.listSearch),
     path('peupleurbdd/', views.peupleur, name="peupleur"),
+    path('inscription/', views.inscription, name='inscription'),
 ]
