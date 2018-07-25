@@ -1,0 +1,39 @@
+body{
+    height: 100%;
+    width: 100%;
+    background-color:black;
+}
+
+#bg{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+}
+
+.text{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+    height: auto;
+    text-align: center;
+    color: white;
+    text-shadow: 4px 4px rgba(0,0,0,0.2);
+}
+
+h1{
+    font-size: 10vh;
+}
+h2{
+    font-size: 4vh;
+}
+
+span{
+    text-align: right;
+    font-size: 2vh;
+    font-style: italic;
+}

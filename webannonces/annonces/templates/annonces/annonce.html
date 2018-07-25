@@ -1,0 +1,71 @@
+{% extends "annonces/base.html" %}
+{% load static %}
+{% block title %}{{ annonce.titre }}{% endblock %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'annonces/css/annonce.css' %}">
+{% endblock %}
+{% block content %}
+	<div class="container-fluid" id="annonce-wrapper">
+	    <div class="content-wrapper">	
+			<div class="item-container">	
+				<div class="container">	
+					<div class="col-md-4">
+						<div class="product col-md-12 service-image-left">
+							<center>
+								<img id="item-display" src="" alt=""></img>
+							</center>
+						</div>
+						
+					</div>
+						
+					<div class="col-md-8">
+						<div class="product-title">{{ annonce.titre }}</div>
+						<div class="product-price">{{ annonce.montant }} €</div>
+						<hr>
+						<div class="btn-group cart">
+							<a href="mailto:{{ annonce.user_id.email }}" class="btn btn-success">Contacter le vendeur</a>
+						</div>
+						{% comment %}
+							@if ($annonce->user == $currentUserId)
+							<div class="btn-group">
+								<a href="" class="btn btn-default">
+									Modifier mon annonce
+								</a>
+							</div>
+							@endif
+						{% endcomment %}
+					</div>
+				</div> 
+			</div>
+			<div class="container-fluid">		
+				<div class="col-md-12 product-info">
+						<ul id="myTab" class="nav nav-tabs nav_tabs">
+							
+							<li class="active"><a href="#service-one" data-toggle="tab">DESCRIPTION</a></li>
+							
+						</ul>
+					<div id="myTabContent" class="tab-content">
+							<div class="tab-pane fade in active" id="service-one">
+							 
+								<section class="container product-info">
+								{{ annonce.contenu }}
+								</section>
+											  
+							</div>
+						<div class="tab-pane fade" id="service-two">
+							
+							<section class="container">
+									
+							</section>
+							
+						</div>
+						<div class="tab-pane fade" id="service-three">
+													
+						</div>
+					</div>
+					<hr>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
