@@ -23,6 +23,7 @@
 						<div class="product-price">{{ annonce.montant }} €</div>
 						<hr>
 						<div class="btn-group cart">
+							<p>par {{ annonce.user_id.firstname }} {{ annonce.user_id.lastname }}</p>
 							<a href="mailto:{{ annonce.user_id.email }}" class="btn btn-success">Contacter le vendeur</a>
 						</div>
 						{% comment %}
