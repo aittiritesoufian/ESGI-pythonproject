@@ -29,5 +29,5 @@ class User(models.Model):
         ordering = ['firstname','lastname']
 
     def __str__(self):
-        name = str(self.firstname)." ".str(self.lastname)
+        name = str(self.firstname)+" "+str(self.lastname)
         return name
