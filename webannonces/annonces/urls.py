@@ -8,4 +8,8 @@ urlpatterns = [
     path('list/<str:title>', views.listSearch),
     path('peupleurbdd/', views.peupleur, name="peupleur"),
     path('inscription/', views.inscription, name='inscription'),
+    path('connexion/', views.connexion, name='connexion'),
+    path('deconnexion/', views.deconnexion, name='deconnexion'),
+    path('mes-annonces/', views.mesAnnonces, name='mes_annonces'),
+    path('mes-annonces/<int:id_annonce>', views.editAnnonce, name='edit_annonces'),
 ]

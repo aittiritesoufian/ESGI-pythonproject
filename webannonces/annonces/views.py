@@ -3,7 +3,10 @@ from django.shortcuts import render, redirect
 from datetime import datetime
 from django.contrib.auth.models import User
 from annonces.models import Annonceur, Annonces
-from .forms import InscriptionForm
+from .forms import AnnonceForm, ConnexionForm
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 import random
 import pickle
 
@@ -15,7 +18,7 @@ def getAnnonce(request, id_annonce):
     annonce = Annonces.objects.get(id=id_annonce)
 
     if(annonce is None):
-        return redirect(home)
+        return redirect('home')
     return render(request, 'annonces/annonce.html', locals())
 
 def list(request):
@@ -32,7 +35,7 @@ def peupleur(request):
 <br>
 Apple pie fruitcake caramels powder muffin. Powder jelly soufflé. Sweet muffin chocolate bar cake pastry jujubes dessert gummies. Croissant dragée lemon drops dessert. Jelly beans caramels powder cake. Gummies icing apple pie cake lemon drops. Cupcake candy canes tootsie roll lollipop. Croissant dessert marshmallow icing jelly cheesecake pie."""
 
-    users = len(User.objects.all()) - 1
+    users = len(User.objects.all())
 
     if(users < 1):
         user = User.objects.create_user('Soufian', 'aittirite.soufian@gmail.com', 'mypass')
@@ -41,7 +44,7 @@ Apple pie fruitcake caramels powder muffin. Powder jelly soufflé. Sweet muffin 
         user = User.objects.create_user('Pierre', 'pierre.truchot2@gmail.com', 'mypass2')
         user1 = Annonceur(user=user,phone="06.02.03.04.05",site_web="http://wesic.me/")
         user1.save()
-        users = len(User.objects.all()) - 1
+        users = len(User.objects.all())
     
     for x in range(1,200):
         montant = 25 * x
@@ -57,16 +60,13 @@ Apple pie fruitcake caramels powder muffin. Powder jelly soufflé. Sweet muffin 
 
 def inscription(request):
     #form = InscriptionForm(request.POST or None)
-    # if (request.POST is not None):
-    #     form = InscriptionForm(request.POST, instance=Annonces)
-        
-    #     if form.is_valid():
-    #         annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
-    #         annonce.user_id = User.objects.all()[0]  # Nous ajoutons les attributs manquants
-    #         annonce.save()
-    #         envoi = True
-    # else:
-    form = InscriptionForm(instance=Annonces)
+    # form = InscriptionForm(request.POST or None, instance=Annonces)
+    
+    # if form.is_valid():
+    #     annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
+    #     annonce.user_id = User.objects.all()[0]  # Nous ajoutons les attributs manquants
+    #     annonce.save()
+    #     envoi = True
     
     # if form.is_valid(): 
     #     sujet = form.cleaned_data['sujet']
@@ -77,3 +77,43 @@ def inscription(request):
     #     envoi = True
     
     return render(request, 'annonces/inscription.html', locals())
+
+def connexion(request):
+    error = False
+
+    if request.method == "POST":
+        form = ConnexionForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)  # Nous vérifions si les données sont correctes
+            if user:  # Si l'objet renvoyé n'est pas None
+                login(request, user)  # nous connectons l'utilisateur
+                redirect('mes_annonces')
+            else: # sinon une erreur sera affichée
+                error = True
+    else:
+        form = ConnexionForm()
+
+    return render(request, 'annonces/login.html', locals())
+
+def deconnexion(request):
+    logout(request)
+    return redirect(reverse(connexion))
+
+@login_required(redirect_field_name='connexion')
+def mesAnnonces(request):
+    annonceur = Annonceur.objects.get(user=request.user)
+    annonces = Annonces.objects.filter(annonceur=annonceur)
+    return render(request, 'annonces/mes-annonces.html', locals())
+
+@login_required(redirect_field_name='connexion')
+def editAnnonce(request, id_annonce):
+    annonces = Annonces.objects.get(id=id_annonce)
+    form = AnnonceForm(request.POST or None, instance=Annonces)
+    if form.is_valid():
+        annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
+        annonce.annonceur = Annonceur.objects.get(user=request.user)  # Nous ajoutons les attributs manquants
+        annonce.save()
+        envoi = True
+    return render(request, 'annonces/mes-annonces.html', locals())
