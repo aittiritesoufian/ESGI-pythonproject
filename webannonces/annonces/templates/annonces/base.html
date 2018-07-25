@@ -1,34 +1,3 @@
-{% comment %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-   <link rel="stylesheet" href="/media/css/style.css" />
-   <title>{% block title %}Mon Annonce{% endblock %}</title>
-</head>
-<body>
-<header>Annonces</header>
-    <nav>
-       {% block nav %}
-       <ul>
-            <li><a href="/">Accueil</a></li>
-            <li><a href="/blog/">Blog</a></li>
-            <li><a href="/contact/">Contact</a></li>
-       </ul>
-       {% endblock %}
-   </nav>
-   <section id="thumbnail">
-   	{% load static %}
-   	<img src="{% static 'annonces/img/annonce.png' %}" alt="thumbnail
-   	">
-   </section>
-   <section id="content">
-       {% block content %}{% endblock %}
-   </section>
-<footer>&copy; Mes annonces</footer>
-</body>
-</html>
-{% endcomment %}
-
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -77,14 +46,13 @@
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="{% url 'home' %}">Home</a></li>
 					<li><a href="{% url 'liste_annonces' %}">Consulter les annonces</a></li>
-          {% comment %}
-          @if (Auth::check())
-            <li><a href="http://monannonce.project/admin/annonces">Mes annonces</a></li>
-          @else
-            <li><a href="/admin/login">Connexion</a></li>
-            <li><a href="{{ route('register') }}">Créer un compte</a></li>
-          @endif
-          {% endcomment %}
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'mes_annonces' %}">Mes annonces</a></li>
+            <li><a href="{% url 'deconexion' %}">Déconnexion</a></li>
+          {% else %}
+            <li><a href="{% url 'connexion' %}">Connexion</a></li>
+            <li><a href="{% url 'inscription' %}">Créer un compte</a></li>
+          {% endif %}
 				</ul>
 				
         {% block search %}{% endblock %}

@@ -23,18 +23,16 @@
 						<div class="product-price">{{ annonce.montant }} €</div>
 						<hr>
 						<div class="btn-group cart">
-							<p>par {{ annonce.user_id.firstname }} {{ annonce.user_id.lastname }}</p>
-							<a href="mailto:{{ annonce.user_id.email }}" class="btn btn-success">Contacter le vendeur</a>
+							<p>par {{ annonce.annonceur.user.username }} {{ annonce.annonceur.user.last_name }}</p>
+							<a href="mailto:{{ annonce.annonceur.user.email }}" class="btn btn-success">Contacter le vendeur</a>
 						</div>
-						{% comment %}
-							@if ($annonce->user == $currentUserId)
+						{% if user.id == annonce.annonceur.user.id %}
 							<div class="btn-group">
-								<a href="" class="btn btn-default">
+								<a href="{% url 'edit_annonces' annonce.id %}" class="btn btn-default">
 									Modifier mon annonce
 								</a>
 							</div>
-							@endif
-						{% endcomment %}
+						{% endif %}
 					</div>
 				</div> 
 			</div>

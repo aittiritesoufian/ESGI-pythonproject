@@ -1,0 +1,36 @@
+{% extends "annonces/base.html" %}
+{% load static %}
+{% block title %}Liste des annonces du site{% endblock %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'annonces/css/annonces.css' %}">
+{% endblock %}
+{% block search %}
+    {# toDo #}
+{% endblock %}
+{% block content %}
+    <div class="container" id="annonce-wrapper">
+        <h1>Mes annonces</h1>
+        <div id="products" class="row list-group">
+            {% for annonce in annonces %}
+            <div class="item  col-xs-4 col-lg-4">
+                <div class="thumbnail">
+                    <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" alt="" />
+                    <div class="caption">
+                        <h4 class="group inner list-group-item-heading">{{ annonce.titre }}</h4>
+                        <p class="group inner list-group-item-text">{{ annonce.contenu|truncatewords:60 }}</p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead">{{ annonce.montant }} €</p>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <a class="btn btn-success" href="{% url 'single_annonce' annonce.id %}">Voir l'annonce</a>
+                                <a class="btn btn-default" href="{% url 'edit_annonces' annonce.id %}">Editer l'annonce</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
