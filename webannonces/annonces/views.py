@@ -98,13 +98,13 @@ def deconnexion(request):
     logout(request)
     return redirect(reverse(connexion))
 
-@login_required
+@login_required(login_url='/annonces/connexion')
 def mesAnnonces(request):
     annonceur = Annonceur.objects.get(user=request.user)
-    annonces = Annonces.objects.filter(annonceur=annonceur)
+    annonces = Annonces.objects.filter(annonceur=annonceur).order_by(Lower('date').desc())
     return render(request, 'annonces/mes-annonces.html', locals())
 
-@login_required
+@login_required(login_url='/annonces/connexion')
 def editAnnonce(request, id_annonce):
     annonce = get_object_or_404(Annonces, id=id_annonce)
     if (annonce.annonceur == Annonceur.objects.get(user=request.user)):
@@ -123,7 +123,7 @@ def editAnnonce(request, id_annonce):
 
     return render(request, 'annonces/edit-annonces.html', locals())
 
-@login_required
+@login_required(login_url='/annonces/connexion')
 def addAnnonce(request):
     form = AnnonceForm(request.POST or None)
     if form.is_valid():
