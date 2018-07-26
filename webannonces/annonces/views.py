@@ -105,14 +105,21 @@ def mesAnnonces(request):
 
 @login_required
 def editAnnonce(request, id_annonce):
-    # annonce = Annonces.objects.get(id=id_annonce)
     annonce = get_object_or_404(Annonces, id=id_annonce)
-    form = AnnonceForm(request.POST or None, instance=annonce)
-    if form.is_valid():
-        annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
-        annonce.annonceur = Annonceur.objects.get(user=request.user)  # Nous ajoutons les attributs manquants
-        annonce.save()
+    if (annonce.annonceur == Annonceur.objects.get(user=request.user)):
+        form = AnnonceForm(request.POST or None, instance=annonce)
+        if form.is_valid():
+            update = Annonces.objects.get(id=id_annonce)
+            update.titre = form.cleaned_data["titre"]
+            update.contenu = form.cleaned_data["contenu"]
+            update.date = form.cleaned_data["date"]
+            update.montant = form.cleaned_data["montant"]
+            update.annonceur = Annonceur.objects.get(user=request.user)  # Nous ajoutons les attributs manquants
+            update.save()
+            return redirect('mes_annonces')
+    else:
         return redirect('mes_annonces')
+
     return render(request, 'annonces/edit-annonces.html', locals())
 
 @login_required
