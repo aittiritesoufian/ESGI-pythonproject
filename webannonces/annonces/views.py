@@ -1,9 +1,9 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
 from django.contrib.auth.models import User
 from annonces.models import Annonceur, Annonces
-from .forms import AnnonceForm, ConnexionForm
+from .forms import AnnonceForm, ConnexionForm, InscriptionForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -60,21 +60,17 @@ Apple pie fruitcake caramels powder muffin. Powder jelly soufflé. Sweet muffin 
 
 def inscription(request):
     #form = InscriptionForm(request.POST or None)
-    # form = InscriptionForm(request.POST or None, instance=Annonces)
+    form = InscriptionForm(request.POST or None)
     
-    # if form.is_valid():
-    #     annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
-    #     annonce.user_id = User.objects.all()[0]  # Nous ajoutons les attributs manquants
-    #     annonce.save()
-    #     envoi = True
-    
-    # if form.is_valid(): 
-    #     sujet = form.cleaned_data['sujet']
-    #     message = form.cleaned_data['message']
-    #     envoyeur = form.cleaned_data['envoyeur']
-    #     renvoi = form.cleaned_data['renvoi']
-
-    #     envoi = True
+    if form.is_valid():
+        user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
+        user.first_name = form.cleaned_data['first_name']
+        user.last_name = form.cleaned_data['last_name']
+        user.save()
+        annonceur = Annonceur(user=user)
+        annonceur.save()
+        envoi = True
+        return redirect('connexion')
     
     return render(request, 'annonces/inscription.html', locals())
 
@@ -89,7 +85,7 @@ def connexion(request):
             user = authenticate(username=username, password=password)  # Nous vérifions si les données sont correctes
             if user:  # Si l'objet renvoyé n'est pas None
                 login(request, user)  # nous connectons l'utilisateur
-                redirect('mes_annonces')
+                return redirect('mes_annonces')
             else: # sinon une erreur sera affichée
                 error = True
     else:
@@ -109,11 +105,12 @@ def mesAnnonces(request):
 
 @login_required(redirect_field_name='connexion')
 def editAnnonce(request, id_annonce):
-    annonces = Annonces.objects.get(id=id_annonce)
-    form = AnnonceForm(request.POST or None, instance=Annonces)
+    # annonce = Annonces.objects.get(id=id_annonce)
+    annonce = get_object_or_404(Annonces, id=id_annonce)
+    form = AnnonceForm(request.POST, instance=annonce)
     if form.is_valid():
         annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
         annonce.annonceur = Annonceur.objects.get(user=request.user)  # Nous ajoutons les attributs manquants
         annonce.save()
         envoi = True
-    return render(request, 'annonces/mes-annonces.html', locals())
+    return render(request, 'annonces/edit-annonces.html', locals())
