@@ -76,3 +76,12 @@ Vous pouvez peupler la base de données avec 200 annonces et 2 utilisateurs en v
 ```url
 http://localhost:8000/annonces/peupleurbdd/
 ```
+
+Utilisateurs générés avec le peupleur:
+```bash
+user : Soufian
+password : mypass
+
+user : Pierre
+password : mypass2
+```
