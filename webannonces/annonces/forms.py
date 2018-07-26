@@ -17,7 +17,7 @@ class InscriptionForm(forms.Form):
 	email = forms.EmailField(max_length=100,label="Votre adresse mail*")
 	password = forms.PasswordInput(render_value=False)
 	phone = forms.CharField(max_length=100,label="Votre numéro de téléphone")
-	site_web = forms.URLInput(max_length=100,label="Votre site internet")
+	site_web = forms.URLInput(label="Votre site internet")
 
 class ConnexionForm(forms.Form):
     username = forms.CharField(label="Nom d'utilisateur", max_length=30)
