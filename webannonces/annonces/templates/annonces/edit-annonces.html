@@ -1,0 +1,21 @@
+{% extends "annonces/base.html" %}
+{% load static %}
+{% block title %}Modifier mon annonce{% endblock %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'annonces/css/annonces.css' %}">
+{% endblock %}
+{% block search %}
+    {# toDo #}
+{% endblock %}
+{% block content %}
+    <div class="container" id="annonce-wrapper">
+        <h1>Mes annonces</h1>
+        <div id="edit-form" class="row list-group">
+            <form method="post" action=".">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Se connecter" />
+            </form>
+        </div>
+    </div>
+{% endblock %}
