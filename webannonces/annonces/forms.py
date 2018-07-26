@@ -8,16 +8,14 @@ class AnnonceForm(forms.ModelForm):
         fields = ('titre','contenu','date','montant',)
 
 class InscriptionForm(forms.Form):
-    # class Meta:
-    #     model = User
-    #     fields = ('username','first_name','last_name','email','password')
 	username = forms.CharField(max_length=100,label="Votre nom d'utilisateur*")
 	first_name = forms.CharField(max_length=100,label="Votre Prénom*")
 	last_name = forms.CharField(max_length=100,label="Votre Nom*")
 	email = forms.EmailField(max_length=100,label="Votre adresse mail*")
-	password = forms.PasswordInput(label="Votre mot de passe*",render_value=False)
+	password = forms.CharField(widget=forms.PasswordInput)
 	phone = forms.CharField(max_length=100,label="Votre numéro de téléphone")
-	site_web = forms.URLInput(max_length=100,label="Votre site internet")
+	site_web = forms.URLField()
+
 
 class ConnexionForm(forms.Form):
     username = forms.CharField(label="Nom d'utilisateur", max_length=30)
