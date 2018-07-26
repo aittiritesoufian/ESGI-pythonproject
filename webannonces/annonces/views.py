@@ -7,6 +7,7 @@ from .forms import AnnonceForm, ConnexionForm, InscriptionForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Lower
 import random
 import pickle
 
@@ -22,11 +23,11 @@ def getAnnonce(request, id_annonce):
     return render(request, 'annonces/annonce.html', locals())
 
 def list(request):
-    annonces = Annonces.objects.all().order_by('date')
+    annonces = Annonces.objects.all().order_by(Lower('date').desc())
     return render(request, 'annonces/list-annonces.html', locals())
 
 def listSearch(request, title):
-    annonces = Annonces.objects.filter(titre__contains=title).order_by('date')
+    annonces = Annonces.objects.filter(titre__contains=title).order_by(Lower('date').desc())
     return render(request, 'annonces/list-annonces.html', locals())
 
 # complete database with automatic values
