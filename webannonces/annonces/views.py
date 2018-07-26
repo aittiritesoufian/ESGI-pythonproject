@@ -97,20 +97,30 @@ def deconnexion(request):
     logout(request)
     return redirect(reverse(connexion))
 
-@login_required(redirect_field_name='connexion')
+@login_required
 def mesAnnonces(request):
     annonceur = Annonceur.objects.get(user=request.user)
     annonces = Annonces.objects.filter(annonceur=annonceur)
     return render(request, 'annonces/mes-annonces.html', locals())
 
-@login_required(redirect_field_name='connexion')
+@login_required
 def editAnnonce(request, id_annonce):
     # annonce = Annonces.objects.get(id=id_annonce)
     annonce = get_object_or_404(Annonces, id=id_annonce)
-    form = AnnonceForm(request.POST, instance=annonce)
+    form = AnnonceForm(request.POST or None, instance=annonce)
     if form.is_valid():
         annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
         annonce.annonceur = Annonceur.objects.get(user=request.user)  # Nous ajoutons les attributs manquants
         annonce.save()
-        envoi = True
+        return redirect('mes_annonces')
     return render(request, 'annonces/edit-annonces.html', locals())
+
+@login_required
+def addAnnonce(request):
+    form = AnnonceForm(request.POST or None)
+    if form.is_valid():
+        annonce = form.save(commit=False)  # Ne sauvegarde pas directement l'annonce dans la base de données
+        annonce.annonceur = Annonceur.objects.get(user=request.user)  # Nous ajoutons les attributs manquants
+        annonce.save()
+        return redirect('mes_annonces')
+    return render(request, 'annonces/add-annonces.html', locals())

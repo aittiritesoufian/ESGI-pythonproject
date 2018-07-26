@@ -12,4 +12,5 @@ urlpatterns = [
     path('deconnexion/', views.deconnexion, name='deconnexion'),
     path('mes-annonces/', views.mesAnnonces, name='mes_annonces'),
     path('mes-annonces/<int:id_annonce>', views.editAnnonce, name='edit_annonces'),
+    path('ajout-annonces/', views.addAnnonce, name='new_annonce'),
 ]
