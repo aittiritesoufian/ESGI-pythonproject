@@ -11,10 +11,10 @@
     <div class="container" id="annonce-wrapper">
         <h1>Mes annonces</h1>
         <div id="edit-form" class="row list-group">
-            <form method="post" action=".">
+            <form method="post" action="{% url 'edit_annonces' id_annonce %}">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" value="Se connecter" />
+                <input type="submit" value="Modifier" />
             </form>
         </div>
     </div>
