@@ -46,7 +46,7 @@ pip install Django==2.0
 pip install Django --upgrade
 ```
 
-Récupérer le repo actuel dans un répertoire quelconque
+Récupérer le repo actuel dans un répertoire quelconque (nécessite git, sous windows, téléchargez gitbash: https://gitforwindows.org/)
 
 ```bash
 git clone https://github.com/aittiritesoufian/ESGI-pythonproject.git
