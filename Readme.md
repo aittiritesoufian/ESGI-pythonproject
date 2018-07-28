@@ -39,6 +39,12 @@ Add Python's path to the end of the list (the paths are separated by semicolons)
 C:\Windows;C:\Windows\System32;C:\Python27
 ```
 
+Installation de virtualenv:
+
+```bash
+pip install virtualenv
+```
+
 Installation de Django, puis mise à jour
 
 ```bash
