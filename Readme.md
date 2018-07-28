@@ -75,7 +75,7 @@ python manage.py runserver
 
 Une fois le serveur lancé, rendez-vous sur l'URL suivante pour accéder à la page d'accueil du site:
 ```url
-http://localhost:8000/
+http://localhost:8000/annonces/
 ```
 
 Vous pouvez peupler la base de données avec 200 annonces et 2 utilisateurs en vous rendant sur cette url:
